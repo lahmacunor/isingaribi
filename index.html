@@ -87,6 +87,16 @@
   .ana:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000; }
   .ana svg { width: 34px; height: 34px; flex: none; }
   .ana small { display: block; font-family: system-ui, sans-serif; font-size: 14px; letter-spacing: 0; }
+  .bolumler { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+  .bolumler a {
+    display: flex; align-items: center; gap: 12px; text-align: left;
+    color: var(--yazi); text-decoration: none; font-size: 16px;
+    border: 2px solid var(--yazi); border-radius: 10px; padding: 10px 14px;
+    box-shadow: 3px 3px 0 #000; background: var(--zemin);
+  }
+  .bolumler a:hover { border-color: var(--sari); }
+  .bolumler b { font-family: "Anton", Impact, sans-serif; font-weight: 400; font-size: 18px; color: var(--sari); }
+  .kanal { display: inline-block; margin-top: 12px; color: var(--soluk); font-size: 15px; }
   .siklik { margin: 14px 0 0; font-size: 15px; color: var(--soluk); }
   .siklik .e { display: inline-block; font-size: 13px; border-width: 2px; padding: 0 6px; margin-left: 6px; vertical-align: 2px; animation-delay: 1.3s; }
   .sosyal { display: flex; justify-content: center; gap: 16px; margin-top: 22px; }
@@ -111,11 +121,25 @@
   </ul>
   <p class="kural">Her iddiaya bunlardan biri basılır. Kaynaklar videonun açıklamasında.</p>
 
-  <!-- Yayın günü güncelle: href son videoya (youtu.be/ID), alt satır "Son video". Başlık yazma, A/B testi değiştiriyor. -->
-  <a class="ana" href="https://www.youtube.com/channel/UC_WlPwSPPTOmfSWafbowehw" target="_blank" rel="noopener">
+  <!-- Ana buton en yeni yayındaki bölüme gider (aşağıdaki betik seçer). Yeni bölüm: listeye data-yayin'li bir <li> ekle.
+       Başlık yazma, A/B testi değiştiriyor; konu adı yeter. -->
+  <a class="ana" id="son" href="https://youtu.be/ggRvRLNnka8" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8z"/><path fill="#d7261e" d="M9.7 15.1 15.5 12 9.7 8.9z"/></svg>
-    <span>YouTube kanalı<small>İlk video 3 Ekim, 17:00</small></span>
+    <span>Son video<small id="son-ad">Kral ölümleri</small></span>
   </a>
+  <ul class="bolumler" aria-label="Bütün bölümler">
+    <li data-yayin="2026-10-03T17:00:00+03:00"><a href="https://youtu.be/ggRvRLNnka8" target="_blank" rel="noopener"><b>01</b>Kral ölümleri</a></li>
+    <li data-yayin="2026-10-07T18:00:00+03:00"><a href="https://youtu.be/E91gMwLBwWY" target="_blank" rel="noopener"><b>02</b>Toplu histeriler</a></li>
+    <li data-yayin="2026-10-10T17:00:00+03:00"><a href="https://youtu.be/fz2i-pJF6og" target="_blank" rel="noopener"><b>03</b>Yunan tanrıları</a></li>
+  </ul>
+  <a class="kanal" href="https://www.youtube.com/channel/UC_WlPwSPPTOmfSWafbowehw" target="_blank" rel="noopener">Kanala git →</a>
+  <script>
+    // yayın saati gelmemiş bölümü gizle; ana buton en yeni yayındakine gitsin
+    const yayinda = [...document.querySelectorAll('.bolumler li')].filter(li => {
+      const v = new Date(li.dataset.yayin) <= new Date(); li.hidden = !v; return v; });
+    const son = yayinda.at(-1)?.querySelector('a');
+    if (son) { document.getElementById('son').href = son.href; document.getElementById('son-ad').textContent = son.lastChild.textContent; }
+  </script>
   <p class="siklik">Her Cumartesi yeni video<span class="e supheli" title="Henüz kanıtlanmadı">ŞÜPHELİ</span></p>
 
   <nav class="sosyal" aria-label="Diğer hesaplar">
